@@ -111,6 +111,24 @@
                             </target>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-entesb14876</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <target>
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
+                                    <arg value="--wsdl=file:${basedir}/src/test/resources/entesb14876/hello.wsdl" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/service/hello" />
+                                    <arg value="--camel-context=entesb14876-camel-context.xml" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

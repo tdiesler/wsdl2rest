@@ -1,0 +1,51 @@
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <camelContext id="cxfrs-f2667d3c-538c-4e9f-9cf3-d46e69ba0abd" xmlns="http://camel.apache.org/schema/spring">
+
+        <dataFormats>
+            <xmljson id="xmljson"/>
+        </dataFormats>
+        
+        <restConfiguration component="jetty" host="localhost" port="8081" bindingMode="json">
+        </restConfiguration>
+
+        <rest id="id-0c52b0b8-b874-4d4c-a93b-0b1473ad9137" path="/jaxrs">
+
+          <get id="id-7c5f3786-d701-4441-9ec4-d8354ad5fd58" uri="/testrequest" 
+            type="org.example.TestRequest"
+            >
+            <to uri="direct:TestRequest"/>
+          </get>
+        </rest>
+
+        <!-- 
+            Using paramType: org.example.TestRequest 
+            outType="org.example.TestRequestResponse" 
+        -->
+        
+        <route id="TestRequest">
+            <from uri="direct:TestRequest" />
+            <log loggingLevel="INFO" message="TestRequest"/>
+            <!--
+            <to uri="cxf://http://localhost:8080/service/hello?serviceClass=org.example.Hello&amp;defaultOperationName=TestRequest"/>
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            -->
+            <setHeader headerName="Content-Type">
+               <constant>test/plain</constant>
+            </setHeader>
+            <setBody>
+                <simple>{"result":true,"val2":"bar"}</simple>
+            </setBody>
+        </route>
+        
+    </camelContext>
+
+</beans>

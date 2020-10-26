@@ -20,9 +20,17 @@
 
           <$method.httpMethod.toLowerCase() id="id-$id.next" uri="/$method.path" 
 #if ( $method.params.size() == 1 )
+#if ( $method.wrappedParams.size() == 1 )
             type="$method.wrappedParams[0].paramType"
+#else
+            type="$method.params[0].paramType"
 #end    
+#end    
+#if ( $method.wrappedReturnType != "void" )
             outType="$method.wrappedReturnType" 
+#else
+            outType="$method.returnType" 
+#end    
 #if ( $method.httpMethod.toLowerCase() == 'post' || $method.httpMethod.toLowerCase() == 'put' ) 
             consumes="application/json" 
 #end
@@ -34,10 +42,16 @@
 
 #foreach( $method in $allMethods )
 #if ( $method.params.size() == 1 )
+#if ( $method.wrappedParams.size() == 1 )
 #set ( $paramType = $method.wrappedParams[0].paramType )
+#else
+#set ( $paramType = $method.params[0].paramType )
+#end    
 #else
 #set ( $paramType = "" )
 #end
+        <!-- Using paramType: $paramType -->
+        
         <route id="$method.methodName">
             <from uri="direct:$method.methodName" />
             <log loggingLevel="INFO" message="$method.methodName"/>
